@@ -1,0 +1,20 @@
+{
+  "name": "norio-office-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Norio Office 四类编辑器的中文静态文档站",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs --watch",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "devDependencies": {
+    "highlight.js": "11.11.1",
+    "markdown-it": "14.3.3"
+  }
+}

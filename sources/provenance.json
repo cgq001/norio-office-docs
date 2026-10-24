@@ -1,0 +1,35 @@
+{
+  "reviewedAt": "2026-10-25",
+  "files": [
+    {
+      "editor": "word",
+      "source": "office-word/packages/office-word/README.md",
+      "sha256": "522af5a280a6c626cc5c65cc4f61f68af206f403f05f98b5f99f0781883ded98"
+    },
+    {
+      "editor": "excel",
+      "source": "office-excel/packages/office-excel/README.md",
+      "sha256": "75584b5d375ac5e6eb16db7e1e649be91c63b6ca0fc4304ae972fff947ef7e9e"
+    },
+    {
+      "editor": "ppt",
+      "source": "office-ppt/packages/office-ppt/README.md",
+      "sha256": "6a2b3298bbcde171c5d4e68a95dc3bc86d5befa5b9ad369a1cfaccbd5455f27c"
+    },
+    {
+      "editor": "rich",
+      "source": "rich-text/packages/office-word/README.md",
+      "sha256": "c5b0e259bef0c200d9ec9d1a026d83f05e3f5b1cf6db4a7c50c249c4734a6716"
+    },
+    {
+      "editor": "word",
+      "source": "office-word/packages/office-word/docs/AI接入.md",
+      "sha256": "fdaca5af02be84402ccdf0011cb6c42122a9035015dc6b9672b9b9f49ec95b1c"
+    },
+    {
+      "editor": "ppt",
+      "source": "office-ppt/packages/office-ppt/docs/AI接入.md",
+      "sha256": "9f50cdec774fea4d9d7968a92e902ccb7296fe66fbbcd7422e6d24fa1fefceb0"
+    }
+  ]
+}

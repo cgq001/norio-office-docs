@@ -28,9 +28,18 @@ async function allFiles(dir) {
   const found=await Promise.all(entries.map(e=>e.isDirectory()?allFiles(path.join(dir,e.name)):[path.join(dir,e.name)]));
   return found.flat();
 }
+const runtimeAssets=new Set(['styles.css','app.js','theme.js','search-index.json']);
+export function assertPublicAssets(html,url,publicAssets) {
+  for(const match of html.matchAll(/\b(?:href|src)="\/([^"?#]+)(?:[?#][^"]*)?"/g)) {
+    const asset=decodeURIComponent(match[1]);
+    if(!path.posix.extname(asset)||asset.endsWith('/')||runtimeAssets.has(asset))continue;
+    if(!publicAssets.has(asset))throw new Error(`Missing public asset /${asset} referenced by ${url}. Add public/${asset} to the source repository; an old dist/ copy is not sufficient. File names are case-sensitive on deployment.`);
+  }
+}
 export async function build() {
   const templateVersion=(await fs.stat('src/templates.mjs')).mtimeMs;
   const {layout,home,documentPage,groups}=await import(`../src/templates.mjs?v=${templateVersion}`);
+  const publicAssets=new Set((await allFiles('public')).map(file=>file.replaceAll('\\','/').replace(/^public\//,'')));
   const pages=[];
   const search=[];
   for(const file of (await allFiles('content')).filter(f=>f.endsWith('.md'))) {
@@ -67,10 +76,12 @@ export async function build() {
   await fs.mkdir(out,{recursive:true});
   await fs.cp('public',out,{recursive:true});
   for(const file of ['styles.css','app.js','theme.js'])await fs.copyFile(`src/${file}`,path.join(out,file));
-  const write=(url,html)=>{const destination=path.join(out,url,'index.html');return fs.mkdir(path.dirname(destination),{recursive:true}).then(()=>fs.writeFile(destination,html));};
+  const write=(url,html)=>{assertPublicAssets(html,url,publicAssets);const destination=path.join(out,url,'index.html');return fs.mkdir(path.dirname(destination),{recursive:true}).then(()=>fs.writeFile(destination,html));};
   await write('/',layout({title:'编辑器文档',description:'Norio Office 四类编辑器中文文档。了解 Word、Excel、PPT 与富文本的功能、Vue 接入、AI 原子级修改和 Docker 协作部署。',body:home(),siteUrl}));
   for(const page of pages)await write(page.url,layout({...page,active:page.group,body:documentPage(page,pages),siteUrl}));
-  await fs.writeFile(path.join(out,'404.html'),layout({title:'页面未找到',description:'这个地址没有对应的文档。',body:'<main id="main" class="not-found wrap"><span class="eyebrow">404 / PAGE NOT FOUND</span><h1>这页文档暂时不在这里。</h1><p>地址可能有误，或内容已经移动。你可以返回首页，或通过顶部搜索查找。</p><a class="button primary" href="/">返回文档首页 →</a></main>',siteUrl}));
+  const notFound=layout({title:'页面未找到',description:'这个地址没有对应的文档。',body:'<main id="main" class="not-found wrap"><span class="eyebrow">404 / PAGE NOT FOUND</span><h1>这页文档暂时不在这里。</h1><p>地址可能有误，或内容已经移动。你可以返回首页，或通过顶部搜索查找。</p><a class="button primary" href="/">返回文档首页 →</a></main>',siteUrl});
+  assertPublicAssets(notFound,'/404.html',publicAssets);
+  await fs.writeFile(path.join(out,'404.html'),notFound);
   await fs.writeFile(path.join(out,'search-index.json'),JSON.stringify(search));
   await fs.writeFile(path.join(out,'robots.txt'),`User-agent: *\nAllow: /\n${siteUrl?`Sitemap: ${siteUrl}/sitemap.xml\n`:''}`);
   if(siteUrl)await fs.writeFile(path.join(out,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['/',...pages.map(p=>p.url)].map(url=>`<url><loc>${escape(siteUrl+url)}</loc></url>`).join('')}</urlset>`);

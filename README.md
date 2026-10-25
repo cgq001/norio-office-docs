@@ -23,6 +23,8 @@ npm run preview
 
 产物位于 `dist/`。检查脚本覆盖静态页面、内部链接、资源、锚点、搜索记录、四套核心文档，以及侧栏和搜索默认范围的隔离。
 
+页面使用的图片必须放在 `public/` 中并提交到 Git，例如首页插画 `public/indexBG.png`。构建时会复制为 `dist/indexBG.png`，页面通过 `/indexBG.png` 访问。只在本地 `dist/` 中保留图片不会进入 Cloudflare 的源码构建；构建会检查源资源是否存在，并按部署环境区分文件名大小写。
+
 ## Cloudflare Pages
 
 | 项目 | 配置 |

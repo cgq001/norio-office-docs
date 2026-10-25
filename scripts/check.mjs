@@ -43,7 +43,7 @@ for(const [file,html] of cache){
 const index=JSON.parse(await fs.readFile(path.join(root,'search-index.json'),'utf8'));
 for(const record of index){if(!record.title||!record.text||!record.group||!record.groupId||!record.url.startsWith(`/${record.groupId}/`))errors.push(`Invalid search record: ${record.url}`);await verify(record.url,path.join(root,'index.html'));}
 for(const group of ['word','excel','ppt','rich']){
-  for(const page of ['overview','quickstart','ai','faq'])if(!cache.has(path.join(root,group,page,'index.html')))errors.push(`Missing ${group}/${page}`);
+  for(const page of ['overview','installation','quickstart','ai','faq'])if(!cache.has(path.join(root,group,page,'index.html')))errors.push(`Missing ${group}/${page}`);
 }
 for(const keyword of ['Docker','fontUrls','getAiBridge','createRichTextAiBridge','createExcelAiBridge'])if(!index.some(record=>record.text.includes(keyword)))errors.push(`Not searchable: ${keyword}`);
 if(errors.length){console.error(errors.join('\n'));process.exitCode=1;}else console.log(`Passed: ${htmlFiles.length} HTML pages, ${checked} internal links/assets/anchors, ${index.length} search sections. No editor runtime dependencies.`);

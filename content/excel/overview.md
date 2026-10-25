@@ -4,6 +4,16 @@
 
 Office Excel 是 Vue 3 在线表格组件，适合预算、台账、业务数据录入和报表编辑。编辑对象是完整工作簿，包含多个工作表及其单元格、样式、表对象和图表等结构。
 
+## 安装与快速接入
+
+在你的 Vue 3.5+ 项目根目录执行：
+
+```bash
+npm install @norio-office/office-excel yjs@^13.6.30
+```
+
+[安装说明与依赖要求](/excel/installation/) · [快速开始：引入组件并运行页面](/excel/quickstart/)
+
 ## 可以完成什么
 
 | 功能 | 使用场景 |

@@ -4,6 +4,16 @@
 
 Rich Text 基于 Vue 3 与 Tiptap 3，适合知识库、产品说明、笔记和业务内容录入。它以内容块组织文档，支持结构化 JSON、HTML 输出和 `.nordox` 原生文件。
 
+## 安装与快速接入
+
+在你的 Vue 3.5+ 项目根目录执行：
+
+```bash
+npm install @norio-office/rich-text @tiptap/core@^3.22.1 --include=peer
+```
+
+[安装说明与依赖要求](/rich/installation/) · [快速开始：引入组件并运行页面](/rich/quickstart/)
+
 ## 可以完成什么
 
 | 功能 | 使用场景 |

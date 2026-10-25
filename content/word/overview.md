@@ -4,6 +4,16 @@
 
 Office Word 是 Vue 3 文档编辑组件，支持页面排版、段落样式、表格和审阅功能。可导入 DOCX，编辑后导出 DOCX、PDF、SVG 或 PNG。
 
+## 安装与快速接入
+
+在你的 Vue 3.5+ 项目根目录执行：
+
+```bash
+npm install @norio-office/office-word
+```
+
+[安装说明与依赖要求](/word/installation/) · [快速开始：引入组件并运行页面](/word/quickstart/)
+
 ## 可以完成什么
 
 | 功能 | 在实际工作中怎么用 |

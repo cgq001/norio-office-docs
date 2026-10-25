@@ -6,6 +6,7 @@ export const groups = {
   guide: { name: '公共说明', short: '公共说明', color: 'neutral', logo: '/logo.png' },
 };
 const editorIds = ['word', 'excel', 'ppt', 'rich'];
+const editorDecorations = { word: 'file-earmark-text', excel: 'bar-chart-fill', ppt: 'pie-chart-fill', rich: 'text-fields' };
 export const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function icon(name, size = 20) {
   const paths = {
@@ -43,10 +44,10 @@ export function layout({ title, description, active = 'home', body, url = '/', s
 }
 export function home() {
   return `<main id="main">
-    <section class="home-intro"><div class="wrap"><span class="intro-label">Norio Office / 开发文档</span><h1>四款编辑器，<span>从这里开始接入。</span></h1><p class="intro-description">Word、Excel、PPT 和富文本的功能说明、使用示例与 API 参考。<br>选择你正在使用的编辑器。</p>
+    <section class="home-intro"><div class="wrap"><div class="home-hero"><div class="hero-copy"><h1><span class="hero-line">四款编辑器，</span><span class="hero-line"><em>从这里</em>开始接入。</span></h1><p class="intro-description">Word、Excel、PPT 和富文本的功能说明、使用示例与 API 参考。<br>选择你正在使用的编辑器，快速完成集成。</p><div class="hero-actions"><a class="button primary" href="#editors">快速开始 ${icon('arrow', 17)}</a><a class="button" href="/guide/comparison/">功能对照 ${icon('arrow', 17)}</a></div></div><div class="hero-art"><img src="/indexBG.png" width="1536" height="1024" alt="Word、Excel、PPT 与富文本四款编辑器插画" fetchpriority="high" decoding="async"></div></div>
       <div class="product-grid" id="editors">${editorIds.map(id => {
         const g = groups[id];
-        return `<article class="product-card ${g.color}"><div class="card-title">${editorMark(id)}<h2><a href="/${id}/overview/">${g.name}</a></h2></div><p>${g.description}</p><ul>${g.features.map(feature => `<li>${feature}</li>`).join('')}</ul><div class="card-actions"><a class="editor-start" href="/${id}/quickstart/">开始接入 ${icon('arrow', 16)}</a><a href="/${id}/overview/">功能介绍</a></div><div class="card-reference"><a href="/${id}/api/">API 参考</a><span>·</span><a href="/${id}/faq/">常见问题</a></div></article>`;
+        return `<article class="product-card ${g.color}"><img class="card-decoration" src="/icons/${editorDecorations[id]}.svg" width="56" height="56" alt="" aria-hidden="true"><div class="card-title">${editorMark(id)}<h2><a href="/${id}/overview/">${g.name}</a></h2></div><p>${g.description}</p><ul>${g.features.map(feature => `<li>${feature}</li>`).join('')}</ul><div class="card-actions"><a class="editor-start" href="/${id}/quickstart/">开始接入 ${icon('arrow', 16)}</a><a href="/${id}/overview/">功能介绍</a></div><div class="card-reference"><a href="/${id}/api/">API 参考</a><span>·</span><a href="/${id}/faq/">常见问题</a></div></article>`;
       }).join('')}</div><div class="intro-foot"><span>Vue 3.5+ <i>·</i> TypeScript <i>·</i> 按需接入</span><a href="/guide/comparison/">不确定怎么选？看功能对照 ${icon('arrow', 14)}</a></div>
     </div></section>
     <section class="common-section wrap" id="common"><div class="section-heading"><h2>接入前，先了解这几件事。</h2><p>组件负责编辑。模型、文件存储和协作服务，需要与你的应用连接。</p></div>
@@ -54,19 +55,19 @@ export function home() {
       <div class="common-row" id="collaboration"><div class="common-name"><span class="section-label">多人协作</span><h3>协作需要 Docker 版本。</h3></div><div class="common-body"><p>多人同时编辑，需要部署 Docker 版本并连接对应协作服务。安装 npm 组件或部署这个静态文档站，都不会自动开启协作。</p><p>接入时需要配置用户身份、文档权限、实时连接和持久化。四个编辑器的协议不同，请使用与组件版本匹配的服务。</p><a class="detail-link" href="/guide/collaboration/">查看协作部署与接线说明 ${icon('arrow', 15)}</a></div></div>
       <div class="common-row" id="storage"><div class="common-name"><span class="section-label">保存与文件</span><h3>编辑完成，还要接上保存。</h3></div><div class="common-body"><p><code>v-model</code> 更新代表页面收到了新内容，不代表已经写入服务器。应用需要保存完整数据或导出文件，并在保存成功后反馈状态。</p><div class="editor-links">${editorIds.map(id => `<a href="/${id}/${id === 'ppt' ? 'persistence' : 'files'}/">${groups[id].short}保存与导出 ${icon('arrow', 14)}</a>`).join('')}</div></div></div>
     </section>
-    <section class="home-questions wrap" id="questions"><div class="section-heading"><h2>常见问题</h2><p>具体编辑器的问题，在各自的文档中查看。</p></div><div class="faq-layout"><div class="faq-answers"><details><summary>Word 和富文本该怎么选？</summary><p>需要纸张、分页、页眉页脚和 DOCX 交付时选 Word；知识库、笔记和网页内容块选富文本。它们的数据结构和接口不同。<a href="/guide/comparison/">查看详细对照</a>。</p></details><details><summary>必须把四个组件都装上吗？</summary><p>不需要。每个编辑器独立安装，选择业务需要的组件即可。本站只提供文档，不加载编辑器运行时。</p></details><details><summary>AI 按钮能直接调用模型吗？</summary><p>按钮用于标记编辑目标。你还需要在应用中注册工具、连接模型，并管理权限和保存。安装 Skill 也不会自动连接到打开的文档。</p></details></div><nav class="faq-editors" aria-label="各编辑器常见问题">${editorIds.map(id => `<a href="/${id}/faq/">${editorMark(id, true)}<span>${groups[id].name}常见问题</span>${icon('arrow', 16)}</a>`).join('')}</nav></div></section>
+    <section class="home-questions wrap" id="questions"><div class="section-heading"><h2>常见问题</h2><p>具体编辑器的问题，在各自的文档中查看。</p></div><div class="faq-layout"><div class="faq-answers"><details><summary>支持私有化部署吗？</summary><p>当然支持。你可以部署到自己希望接入的环境中。</p></details><details><summary>可以永久免费使用吗？</summary><p>单机版已发布到 npm，支持 Vue 3，永久免费使用。React 项目需接入 Docker 版本。</p></details><details><summary>支持移动端吗？</summary><p>移动端功能正在设计中。</p></details><details><summary>Word 和富文本该怎么选？</summary><p>需要纸张、分页、页眉页脚和 DOCX 交付时选 Word；知识库、笔记和网页内容块选富文本。它们的数据结构和接口不同。<a href="/guide/comparison/">查看详细对照</a>。</p></details><details><summary>必须把四个组件都装上吗？</summary><p>不需要。每个编辑器独立安装，选择业务需要的组件即可。本站只提供文档，不加载编辑器运行时。</p></details><details><summary>AI 按钮能直接调用模型吗？</summary><p>按钮用于标记编辑目标。你还需要在应用中注册工具、连接模型，并管理权限和保存。安装 Skill 也不会自动连接到打开的文档。</p></details></div><nav class="faq-editors" aria-label="各编辑器常见问题">${editorIds.map(id => `<a href="/${id}/faq/">${editorMark(id, true)}<span>${groups[id].name}常见问题</span>${icon('arrow', 16)}</a>`).join('')}</nav></div></section>
     <section class="work-link wrap"><div><h2>想了解基于这些编辑器的完整产品？</h2><p>Norio Work 将 AI 对话和四类编辑器放在同一个工作空间。</p></div><a class="button primary" href="https://work.norio.top/" target="_blank" rel="noopener noreferrer">访问 Norio Work ${icon('external', 15)}</a></section>
   </main>`;
 }
 const navigationSections = [
-  { title: '开始使用', slugs: ['overview', 'quickstart', 'recipes'] },
+  { title: '开始使用', slugs: ['overview', 'installation', 'quickstart', 'recipes'] },
   { title: '功能与接入', slugs: ['data', 'files', 'persistence', 'presenting', 'blocks', 'comments', 'extensions', 'collaboration'] },
   { title: 'AI 接入', slugs: ['ai', 'ai-reference'] },
   { title: '接口与帮助', slugs: ['api', 'methods', 'faq'] },
 ];
 function sidebar(pages, current) {
   const ownPages = pages.filter(page => page.group === current.group);
-  const link = page => `<a href="${page.url}" ${page.url === current.url ? 'aria-current="page"' : ''}>${escape(page.title)}</a>`;
+  const link = page => `<a href="${page.url}" ${page.url === current.url ? 'aria-current="page"' : ''}>${escape(page.url.endsWith('/overview/') ? '功能概览' : page.title)}</a>`;
   const content = current.group === 'guide'
     ? `<div class="sidebar-section"><h2>公共说明</h2>${ownPages.map(link).join('')}</div>`
     : navigationSections.map(section => {

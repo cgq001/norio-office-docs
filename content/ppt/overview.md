@@ -4,6 +4,16 @@
 
 Office PPT 是 Vue 3 演示文稿组件，提供 PPTX 导入、页面编辑、放映、导出和可选持久化。数据以完整 `OfficePptDeck` 交给宿主，页面、对象与文件资源共同组成一份演示文稿。
 
+## 安装与快速接入
+
+在你的 Vue 3.5+ 项目根目录执行：
+
+```bash
+npm install @norio-office/office-ppt
+```
+
+[安装说明与依赖要求](/ppt/installation/) · [快速开始：引入组件并运行页面](/ppt/quickstart/)
+
 ## 可以完成什么
 
 | 功能 | 使用场景 |

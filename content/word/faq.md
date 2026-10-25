@@ -6,7 +6,13 @@
 
 `fontUrls` 必须同时提供 `text`、`symbols`、`emoji`、`cjk` 四项，且字体文件字节与当前组件版本配套。只有文件名相同不够，组件还会校验 SHA-256。
 
-先在浏览器网络面板检查四个地址是否返回字体文件，而不是 404 页面或登录页；跨域资源需要允许应用访问。如果请求正常但校验失败，请使用当前版本交付的字体，不要自行替换。完整配置见[快速开始](/word/quickstart/)。
+先在浏览器网络面板检查四个地址是否返回字体文件，而不是 404 页面或登录页；跨域资源需要允许应用访问。如果请求正常但校验失败，请使用当前版本交付的字体，不要自行替换。[快速开始的字体准备步骤](/word/quickstart/#3-准备四个配套字体)已列出四个真实下载链接和配置。
+
+## 字体去哪里下载
+
+演示环境使用 `http://cnd.norio.top/npm-fonts/` 下的 [text.ttf](http://cnd.norio.top/npm-fonts/text.ttf)、[symbols.ttf](http://cnd.norio.top/npm-fonts/symbols.ttf)、[emoji.ttf](http://cnd.norio.top/npm-fonts/emoji.ttf) 和 [cjk.otf](http://cnd.norio.top/npm-fonts/cjk.otf)。
+
+目前这些地址使用 HTTP，域名的 HTTPS 证书也存在不匹配问题。HTTPS 应用应先下载字体，再托管到自己的站点或 HTTPS 资源服务；下载命令与本地路径配置见[快速开始](/word/quickstart/#下载字体并自行托管)。
 
 ## 本地能打开，部署后为什么不能排版
 

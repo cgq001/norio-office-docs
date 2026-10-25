@@ -6,6 +6,12 @@ export const groups = {
   guide: { name: '公共说明', short: '公共说明', color: 'neutral', logo: '/logo.png' },
 };
 const editorIds = ['word', 'excel', 'ppt', 'rich'];
+export const editorDemos = {
+  word: { label: 'Word 演示', url: 'https://demo.norio.top/#/word' },
+  excel: { label: 'Excel 演示', url: 'https://demo.norio.top/#/excel' },
+  ppt: { label: 'PPT 演示', url: 'https://demo.norio.top/#/ppt' },
+  rich: { label: '富文本演示', url: 'https://demo.norio.top/#/rich-text' },
+};
 const editorDecorations = { word: 'file-earmark-text', excel: 'bar-chart-fill', ppt: 'pie-chart-fill', rich: 'text-fields' };
 export const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export function icon(name, size = 20) {
@@ -22,14 +28,18 @@ export function icon(name, size = 20) {
 function editorMark(id, small = false) {
   return `<img class="editor-mark${small ? ' small' : ''}" src="${groups[id].logo}" width="44" height="44" alt="" aria-hidden="true">`;
 }
+function demoLink(id, className) {
+  const demo = editorDemos[id];
+  return `<a class="${className}" href="${demo.url}" target="_blank" rel="noopener noreferrer" title="在新窗口打开${demo.label}">${demo.label} ${icon('external', 13)}</a>`;
+}
 function header(active) {
   return `<a href="#main" class="skip-link">跳到主要内容</a>
   <header class="site-header"><div class="header-inner">
     <a class="brand" href="/" aria-label="Norio Office 首页"><img src="/logo.png" width="36" height="36" alt=""><span>Norio <b>Office</b></span><span class="brand-divider"></span><span class="docs-label">开发文档</span></a>
-    <nav class="desktop-nav" aria-label="主导航"><a href="/" ${active === 'home' ? 'aria-current="page"' : ''}>首页</a>${editorIds.map(id => `<a href="/${id}/overview/" ${active === id ? 'aria-current="page"' : ''}>${groups[id].short}</a>`).join('')}</nav>
+    <nav class="desktop-nav" aria-label="主导航"><a href="/" ${active === 'home' ? 'aria-current="page"' : ''}>首页</a>${editorIds.map(id => `<a href="/${id}/overview/" ${active === id ? 'aria-current="page"' : ''}>${groups[id].short}</a>`).join('')}<a href="https://demo.norio.top" target="_blank" rel="noopener noreferrer" title="在新窗口打开演示站点">演示站点</a></nav>
     <div class="header-actions"><button class="search-open" type="button" aria-label="搜索文档">${icon('search', 16)}<span>搜索文档</span><kbd>Ctrl K</kbd></button><button class="theme-toggle icon-button" type="button" aria-label="切换深浅色主题">${icon('sun')}</button><button class="mobile-menu icon-button" type="button" aria-label="展开导航" aria-expanded="false" aria-controls="mobile-navigation">${icon('menu')}</button></div>
   </div></header>
-  <nav id="mobile-navigation" class="mobile-navigation" aria-label="移动端导航" hidden><a href="/">首页</a>${editorIds.map(id => `<a href="/${id}/overview/" ${active === id ? 'aria-current="page"' : ''}>${groups[id].name}</a>`).join('')}<a href="/#common">公共能力</a></nav>`;
+  <nav id="mobile-navigation" class="mobile-navigation" aria-label="移动端导航" hidden><a href="/">首页</a>${editorIds.map(id => `<a href="/${id}/overview/" ${active === id ? 'aria-current="page"' : ''}>${groups[id].name}</a>`).join('')}<a href="https://demo.norio.top" target="_blank" rel="noopener noreferrer" title="在新窗口打开演示站点">演示站点</a><a href="/#common">公共能力</a></nav>`;
 }
 function search(active) {
   const selected = groups[active] ? active : 'all';
@@ -47,7 +57,7 @@ export function home() {
     <section class="home-intro"><div class="wrap"><div class="home-hero"><div class="hero-copy"><h1><span class="hero-line">四款编辑器，</span><span class="hero-line"><em>从这里</em>开始接入。</span></h1><p class="intro-description">Word、Excel、PPT 和富文本的功能说明、使用示例与 API 参考。<br>选择你正在使用的编辑器，快速完成集成。</p><div class="hero-actions"><a class="button primary" href="#editors">快速开始 ${icon('arrow', 17)}</a><a class="button" href="/guide/comparison/">功能对照 ${icon('arrow', 17)}</a></div></div><div class="hero-art"><img src="/indexBG.png" width="1536" height="1024" alt="Word、Excel、PPT 与富文本四款编辑器插画" fetchpriority="high" decoding="async"></div></div>
       <div class="product-grid" id="editors">${editorIds.map(id => {
         const g = groups[id];
-        return `<article class="product-card ${g.color}"><img class="card-decoration" src="/icons/${editorDecorations[id]}.svg" width="56" height="56" alt="" aria-hidden="true"><div class="card-title">${editorMark(id)}<h2><a href="/${id}/overview/">${g.name}</a></h2></div><p>${g.description}</p><ul>${g.features.map(feature => `<li>${feature}</li>`).join('')}</ul><div class="card-actions"><a class="editor-start" href="/${id}/quickstart/">开始接入 ${icon('arrow', 16)}</a><a href="/${id}/overview/">功能介绍</a></div><div class="card-reference"><a href="/${id}/api/">API 参考</a><span>·</span><a href="/${id}/faq/">常见问题</a></div></article>`;
+        return `<article class="product-card ${g.color}"><img class="card-decoration" src="/icons/${editorDecorations[id]}.svg" width="56" height="56" alt="" aria-hidden="true"><div class="card-title">${editorMark(id)}<h2><a href="/${id}/overview/">${g.name}</a></h2></div><p>${g.description}</p><ul>${g.features.map(feature => `<li>${feature}</li>`).join('')}</ul><div class="card-actions"><a class="editor-start" href="/${id}/quickstart/">开始接入 ${icon('arrow', 16)}</a><a href="/${id}/overview/">功能介绍</a></div>${demoLink(id, 'editor-demo')}<div class="card-reference"><a href="/${id}/api/">API 参考</a><span>·</span><a href="/${id}/faq/">常见问题</a></div></article>`;
       }).join('')}</div><div class="intro-foot"><span>Vue 3.5+ <i>·</i> TypeScript <i>·</i> 按需接入</span><a href="/guide/comparison/">不确定怎么选？看功能对照 ${icon('arrow', 14)}</a></div>
     </div></section>
     <section class="common-section wrap" id="common"><div class="section-heading"><h2>接入前，先了解这几件事。</h2><p>组件负责编辑。模型、文件存储和协作服务，需要与你的应用连接。</p></div>
@@ -60,7 +70,7 @@ export function home() {
   </main>`;
 }
 const navigationSections = [
-  { title: '开始使用', slugs: ['overview', 'installation', 'quickstart', 'recipes'] },
+  { title: '开始使用', slugs: ['overview', 'installation', 'quickstart', 'demo', 'recipes'] },
   { title: '功能与接入', slugs: ['data', 'files', 'persistence', 'presenting', 'blocks', 'comments', 'extensions', 'collaboration'] },
   { title: 'AI 接入', slugs: ['ai', 'ai-reference'] },
   { title: '接口与帮助', slugs: ['api', 'methods', 'faq'] },
@@ -71,8 +81,8 @@ function sidebar(pages, current) {
   const content = current.group === 'guide'
     ? `<div class="sidebar-section"><h2>公共说明</h2>${ownPages.map(link).join('')}</div>`
     : navigationSections.map(section => {
-      const items = section.slugs.flatMap(slug => ownPages.filter(page => page.url === `/${current.group}/${slug}/`));
-      return items.length ? `<div class="sidebar-section"><h2>${section.title}</h2>${items.map(link).join('')}</div>` : '';
+      const items = section.slugs.flatMap(slug => slug === 'demo' ? [demoLink(current.group, 'sidebar-demo')] : ownPages.filter(page => page.url === `/${current.group}/${slug}/`).map(link));
+      return items.length ? `<div class="sidebar-section"><h2>${section.title}</h2>${items.join('')}</div>` : '';
     }).join('');
   return `<aside class="doc-sidebar" id="editor-navigation"><a class="sidebar-home" href="/#editors">← 全部编辑器</a><div class="sidebar-product">${editorMark(current.group, true)}<strong>${groups[current.group].name}</strong></div><nav aria-label="${groups[current.group].name}文档目录">${content}</nav></aside>`;
 }

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { editorDemos } from '../src/templates.mjs';
 const root=path.resolve('dist');
 async function files(dir){return(await Promise.all((await fs.readdir(dir,{withFileTypes:true})).map(e=>e.isDirectory()?files(path.join(dir,e.name)):path.join(dir,e.name)))).flat();}
 const htmlFiles=(await files(root)).filter(f=>f.endsWith('.html'));
@@ -34,7 +35,7 @@ for(const [file,html] of cache){
   if(group){
     const sidebar=html.match(/<aside class="doc-sidebar"[\s\S]*?<nav[^>]*>([\s\S]*?)<\/nav>/)?.[1];
     if(!sidebar)errors.push(`${file}: missing editor navigation`);
-    for(const link of (sidebar||'').matchAll(/href="([^"]+)"/g))if(!link[1].startsWith(`/${group}/`))errors.push(`${file}: cross-editor sidebar link ${link[1]}`);
+    for(const link of (sidebar||'').matchAll(/href="([^"]+)"/g))if(!link[1].startsWith(`/${group}/`)&&link[1]!==editorDemos[group].url)errors.push(`${file}: cross-editor sidebar link ${link[1]}`);
     if(!sidebar?.includes(`href="/${group}/faq/"`))errors.push(`${file}: missing editor FAQ`);
     if(!html.includes(`<option value="${group}" selected>`))errors.push(`${file}: wrong default search scope`);
   }
